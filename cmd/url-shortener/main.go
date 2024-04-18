@@ -13,15 +13,14 @@ const (
 )
 
 func main() {
-	// TODO: init config: cleanenv
+	// init config: cleanenv
 	cfg := config.MustLoad()
 
+	// init logger: slog
 	log := setupLogger(cfg.Env)
 
 	log.Info("Starting url-shortener", slog.String("env", cfg.Env))
 	log.Debug("debug messages are enabled")
-
-	// TODO: init logger: slog
 
 	// TODO: init storage: sqlite
 
