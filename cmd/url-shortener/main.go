@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"os"
 	"url-shortener-rest-practice/internal/config"
+	"url-shortener-rest-practice/internal/http-server/middleware/logger"
 	"url-shortener-rest-practice/internal/lib/logger/sl"
 	"url-shortener-rest-practice/internal/storage/sqlite"
 )
@@ -41,7 +42,9 @@ func main() {
 	// middleware
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
-	router.Use(middleware.Logger)
+	router.Use(logger.New(log))
+	router.Use(middleware.Recoverer)
+	router.Use(middleware.URLFormat)
 
 	// TODO: run app
 
