@@ -3,6 +3,7 @@ package save
 import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
+	"github.com/go-playground/validator/v10"
 	"log/slog"
 	"net/http"
 	"url-shortener-rest-practice/internal/lib/api/response"
@@ -39,6 +40,16 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 			log.Error("failed to decode request body", sl.Err(err))
 
 			render.JSON(w, r, response.Error("failed to decode request"))
+
+			return
+		}
+
+		log.Info("request body decoded", slog.Any("request", req))
+
+		if err := validator.New().Struct(req); err != nil {
+			log.Error("invalid request", sl.Err(err))
+
+			render.JSON(w, r, response.Error("invalid request"))
 
 			return
 		}
