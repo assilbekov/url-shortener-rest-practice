@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"os"
 	"url-shortener-rest-practice/internal/config"
+	"url-shortener-rest-practice/internal/http-server/handlers/url/save"
 	"url-shortener-rest-practice/internal/http-server/middleware/logger"
 	"url-shortener-rest-practice/internal/lib/logger/handlers/slogpretty"
 	"url-shortener-rest-practice/internal/lib/logger/sl"
@@ -35,8 +36,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	_ = storage
-
 	// init router: chi, "chi render"
 	router := chi.NewRouter()
 
@@ -46,6 +45,8 @@ func main() {
 	router.Use(logger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
+
+	router.Post("/url", save.New(log, storage))
 
 	// TODO: run app
 
