@@ -3,6 +3,7 @@ package save
 import (
 	"log/slog"
 	"net/http"
+	"url-shortener-rest-practice/internal/lib/api/response"
 )
 
 type Request struct {
@@ -11,9 +12,8 @@ type Request struct {
 }
 
 type Response struct {
-	Status string `json:"status"` // Error, Ok
-	Error  string `json:"error,omitempty"`
-	Alias  string `json:"alias,omitempty"`
+	response.Response
+	Alias string `json:"alias,omitempty"`
 }
 
 type URLSaver interface {
