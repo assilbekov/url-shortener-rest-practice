@@ -85,5 +85,10 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 		}
 
 		log.Info("url saved", slog.Int64("id", id))
+
+		render.JSON(w, r, Response{
+			Response: response.OK(),
+			Alias:    alias,
+		})
 	}
 }
