@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"url-shortener-rest-practice/internal/lib/api/response"
 	"url-shortener-rest-practice/internal/lib/logger/sl"
+	"url-shortener-rest-practice/internal/lib/random"
 )
 
 type Request struct {
@@ -62,7 +63,7 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 
 		alias := req.Alias
 		if alias == "" {
-			//
+			alias = random.NewRandomString(aliasLength)
 		}
 	}
 }
