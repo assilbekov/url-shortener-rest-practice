@@ -20,6 +20,9 @@ type Response struct {
 	Alias string `json:"alias,omitempty"`
 }
 
+// TODO: Move aliasLength to config
+const aliasLength = 6
+
 type URLSaver interface {
 	SaveURL(urlToSave, alias string) (int64, error)
 }
@@ -55,6 +58,11 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 			// render.JSON(w, r, response.ValidationError(validateErr))
 
 			return
+		}
+
+		alias := req.Alias
+		if alias == "" {
+			//
 		}
 	}
 }
