@@ -65,6 +65,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	log.Info("server stopped")
+
 	// TODO: graceful shutdown
 }
 
