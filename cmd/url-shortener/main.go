@@ -4,6 +4,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"log/slog"
+	"net/http"
 	"os"
 	"url-shortener-rest-practice/internal/config"
 	"url-shortener-rest-practice/internal/http-server/handlers/url/save"
@@ -48,7 +49,21 @@ func main() {
 
 	router.Post("/url", save.New(log, storage))
 
-	// TODO: run app
+	log.Info("starting server", slog.String("address", cfg.Address))
+
+	srv := &http.Server{
+		Addr:         cfg.Address,
+		Handler:      router,
+		ReadTimeout:  cfg.HTTPServer.Timeout,
+		WriteTimeout: cfg.HTTPServer.Timeout,
+		IdleTimeout:  cfg.HTTPServer.IdleTimeout,
+	}
+
+	// run app
+	if err := srv.ListenAndServe(); err != nil {
+		log.Error("failed to start server", sl.Err(err))
+		os.Exit(1)
+	}
 
 	// TODO: graceful shutdown
 }
